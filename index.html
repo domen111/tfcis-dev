@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+	<meta charset = 'utf-8'>
     <title>TfCiS</title>
 
     <!-- Stylesheet -->
@@ -10,71 +11,138 @@
     <link href = 'http://fonts.googleapis.com/css?family=Montserrat:400,700' rel = 'stylesheet' type = 'text/css'>
 
     <!-- Google CDN : jQuery -->
-    <script src = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
+    <script src = 'http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
 
     <script language = 'javascript'>
-        //Cross browser support
-        var requestAnimationFrame =
-        window.requestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.msRequestAnimationFrame;
-      
-        window.requestAnimationFrame = requestAnimationFrame;
-        
-        var title;
-        var subtitle;
-        
-        var title_progress = -1;
-        var title_text = "";
+    //Cross browser support
+    var requestAnimationFrame =
+    window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.msRequestAnimationFrame;
+  
+    window.requestAnimationFrame = requestAnimationFrame;
+    
+    var title;
+    
+    var title_progress = -1;
+    var title_text = "";
 
-        $(document).ready(function(){
-            title = document.getElementById("title");
-            title_text = title.innerHTML;
-            
-            title.innerHTML = "";
-            
-            titleAnimation();
-        });
+	var menu_items;
+	var selected_index = 3;
+
+	var entrance_flag = 0;
+
+    $(document).ready(function(){
+		title = document.getElementById("title");
+		title_text = title.innerHTML;
         
-        function titleAnimation(){
-            if(title_progress <= title_text.length){
-                title.innerHTML = "{" + title_text.substring(0, title_progress) + "_}";
-                title_progress += 1;
-                setTimeout(titleAnimation, 60);
-                
-            } else {
-                setTimeout(function(){
-                    title.innerHTML = "{" + title_text.substring(0, title_progress) + "}";
-                    setTimeout(disp_subtitle, 200);
-                }, 100);
-            }
+		title.innerHTML = "";
+		
+		titleAnimation();
+
+		menu_items = document.getElementById("menu").children;
+    });
+    
+
+
+
+    function titleAnimation(){
+        if(title_progress <= title_text.length){
+            title.innerHTML = "{" + title_text.substring(0, title_progress) + "_}";
+            title_progress += 1;
+            setTimeout(titleAnimation, 60);
+            
+        } else {
+            setTimeout(function(){
+                title.innerHTML = "{" + title_text.substring(0, title_progress) + "}";
+                setTimeout(disp_subtitle, 200);
+            }, 100);
         }
+    }
+    
+    function disp_subtitle(){
+        document.getElementById("subtitle").innerHTML = "press any key to continue: ";
+        $("#subtitle").append('<span id = "cursor" style = "opacity: 1">_</span>');
         
-        function disp_subtitle(){
-            document.getElementById("subtitle").innerHTML = "press any key to continue: ";
-            $("#subtitle").append('<span id = "cursor" style = "visibility: none">_</span>');
-            
-            setInterval(function(){
-                $("#cursor").toggle();
-            }, 400);
-        }
-        
+        setInterval(function(){
+            document.getElementById("cursor").style.opacity ^= 1;
+        	//console.log(document.getElementById("cursor").style.opacity);
+		}, 400);
+    }
 
-        
+	//END OF TiTLE ANiMATiON SCRIPT
 
+
+
+
+	//CONTROLL 'CONTiNUE KEYPRESS'
+	$(document).on("keydown", function(event){
+		
+		if(entrance_flag){
+			//console.log(event);
+			if(event.keyCode == 38) {
+				//UP ARROW
+				event.preventDefault();
+
+				$(menu_items[selected_index]).removeClass("menu-item-selected");
+				selected_index = Math.max(selected_index - 1, 0);
+				$(menu_items[selected_index]).addClass("menu-item-selected");
+
+			} else if (event.keyCode == 40){
+				//DOWN ARROW
+				event.preventDefault();
+
+				$(menu_items[selected_index]).removeClass("menu-item-selected");
+				selected_index = Math.min(selected_index + 1, menu_items.length - 1);
+				$(menu_items[selected_index]).addClass("menu-item-selected");
+			}
+			console.log(selected_index);
+
+		} else {
+			entrance_flag = 1;
+
+			console.log("continue...");
+			$("#subtitle").hide();
+			show_menuitem(0);
+		}
+	});
+
+
+	function show_menuitem(i){
+
+		menu_items[i].style.display = "block";
+		
+		if(menu_items.length > i + 1){
+			setTimeout(function(){show_menuitem(i + 1);}, 60);
+		} else {
+			$(menu_items[selected_index]).addClass("menu-item-selected");
+		}
+
+	}
     </script>
+    <!-- Animation Script
+    <script src = "./scripts/effects_title.js"></script>-->
 </head>
 <body style = "background-color: #000000">
 
-    <div style = "margin: 250px 150px">
-    
-    <div id = "title" class = "title">TFcis</div>
-    <br>
-    <div id = "subtitle" class = "subtitle"></div>
-    
-    
-    </div>
+    <div style = "padding: 0 0 250px 40px; position: absolute; bottom: 0">
+		<!-- INITIAL TiTLES -->
+		<div id = "title" class = "title">TFcis</div>
+		<br>
+		<div id = "subtitle" class = "subtitle"></div>
+
+
+		<!-- ENTRANCE  -->
+		<div id = "menu">
+			<div class = "menu-item" style = "display: none">.</div>
+			<div class = "menu-item" style = "display: none">..</div>
+			<div class = "menu-item" style = "display: none">introduction</div>
+			<div class = "menu-item" style = "display: none">history</div>
+			<div class = "menu-item" style = "display: none">events</div>
+			<div class = "menu-item" style = "display: none">more</div>
+		</div>
+	</div>
 
 </body>
 </html>
