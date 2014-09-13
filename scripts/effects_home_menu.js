@@ -5,8 +5,11 @@ $(document).ready(function(){
 	menu_items = document.getElementById("menu").children;
 	for(var i = 0; i < menu_items.length; ++i){
 		menu_items[i].onmouseover = new Function('e', 'select_menuitem(' + i + ');');
+		menu_items[i].onclick = new Function('load_info();');
 	}
 });
+
+
 
 $(document).click(function(){
 	if(!entrance_flag){
@@ -27,16 +30,19 @@ $(document).on("keydown", function(event){
 			select_menuitem((selected_index + 1) % menu_items.length);
 
 		} else if (event.keyCode == 13){
-			console.log("Display: " + menu_items[selected_index].innerHTML + "...");
+			load_info();
 		}
 
 	} else {
 		continue_to();
-
 	}
 });
 
-
+function load_info(){
+			var c = menu_items[selected_index].childNodes;
+			console.log(c[c.length - 1].nodeValue);
+			$("#content").load('./pages/history.html');
+}
 
 function continue_to(){
 	entrance_flag = 1;
