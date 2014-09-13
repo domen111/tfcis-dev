@@ -41,7 +41,7 @@ $(document).on("keydown", function(event){
 function load_info(){
 			var c = menu_items[selected_index].childNodes;
 			console.log(c[c.length - 1].nodeValue);
-			$("#content").load('./pages/history.html');
+			$("#content").load('./pages/' + c[c.length - 1].nodeValue + '.html');
 }
 
 function continue_to(){
