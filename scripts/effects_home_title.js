@@ -15,6 +15,8 @@ var title_text = "";
 var entrance_flag = 0;
 
 
+var	t_flag = 0;
+
 $(document).ready(function(){
 	title = document.getElementById("title");
 
@@ -22,9 +24,14 @@ $(document).ready(function(){
 	title.innerHTML = "";
 
 	titleAnimation();
+
 });
 
-
+function replayTitleAnimation(){
+	t_flag = 0;
+	title_progress = -1;
+	titleAnimation();
+}
 
 function titleAnimation(){
     if(title_progress <= title_text.length){
@@ -35,7 +42,22 @@ function titleAnimation(){
     } else {
         setTimeout(function(){
             title.innerHTML = "{" + title_text.substring(0, title_progress) + "}";
+
             setTimeout(disp_subtitle, 200);
+
+			/* title animation replays*/
+			title.addEventListener('mouseover', function(){
+				t_flag = 1;
+				setTimeout(function(){
+					if(t_flag) replayTitleAnimation();
+				}, 900);
+			});		
+
+			title.addEventListener('mouseout', function(){
+				t_flag = 0;
+			});
+			/* title animation replays*/
+
         }, 100);
     }
 }
