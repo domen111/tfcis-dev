@@ -43,15 +43,20 @@ html, body {
 	font-size: 32px;
 
 	letter-spacing: 0;
-
-	-webkit-transition: 0.2s;
-	-moz-transition: 0.2s;
-	-o-transition: 0.2s
-	transition: 0.2s;
+	
+	-webkit-transition: color 0.2s;
+	-moz-transition: color 0.2s;
+	-o-transition: color 0.2s;
+	transition: color 0.2s;
+	
 }
 
 .menu-item-selected {
 	color: #ffffff;
+	padding-left: 20px;
+}
+.menu-item-selected::before{
+	content: "> ";
 }
 
 /*.....................................................PARALLAX.....*/

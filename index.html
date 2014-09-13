@@ -13,6 +13,7 @@
     <!-- Google CDN : jQuery -->
     <script src = 'http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
 
+	<!-- DECLARATIONS & TiTLE ANiMATION -->
     <script language = 'javascript'>
     //Cross browser support
     var requestAnimationFrame =
@@ -28,23 +29,18 @@
     var title_progress = -1;
     var title_text = "";
 
-	var menu_items;
-	var selected_index = 3;
-
 	var entrance_flag = 0;
+
 
     $(document).ready(function(){
 		title = document.getElementById("title");
-		title_text = title.innerHTML;
-        
-		title.innerHTML = "";
-		
-		titleAnimation();
 
-		menu_items = document.getElementById("menu").children;
+		title_text = title.innerHTML;
+		title.innerHTML = "";
+
+		titleAnimation();
     });
     
-
 
 
     function titleAnimation(){
@@ -70,13 +66,30 @@
         	//console.log(document.getElementById("cursor").style.opacity);
 		}, 400);
     }
+    </script>
 
-	//END OF TiTLE ANiMATiON SCRIPT
+	<!-- MAiN MENU SCRiPT -->
+    <script language = 'javascript'>
+
+	var menu_items;
+	var selected_index = 2;
+
+    $(document).ready(function(){
+		menu_items = document.getElementById("menu").children;
+
+		for(var i = 0; i < menu_items.length; ++i){
+			$(menu_items[i]).addClass("opt-" + i);
+		}
+    });
+    
 
 
+	$(document).click(function(){
+		if(!entrance_flag){
+			continue_to();
+		}
+	});
 
-
-	//CONTROLL 'CONTiNUE KEYPRESS'
 	$(document).on("keydown", function(event){
 		
 		if(entrance_flag){
@@ -84,30 +97,42 @@
 			if(event.keyCode == 38) {
 				//UP ARROW
 				event.preventDefault();
-
+				/*
 				$(menu_items[selected_index]).removeClass("menu-item-selected");
-				selected_index = Math.max(selected_index - 1, 0);
+
+				selected_index = (selected_index + menu_items.length - 1) % menu_items.length;
 				$(menu_items[selected_index]).addClass("menu-item-selected");
+				*/
+				select_menuitem((selected_index + menu_items.length - 1) % menu_items.length);
 
 			} else if (event.keyCode == 40){
 				//DOWN ARROW
 				event.preventDefault();
-
+				/*
 				$(menu_items[selected_index]).removeClass("menu-item-selected");
-				selected_index = Math.min(selected_index + 1, menu_items.length - 1);
+
+				selected_index = (selected_index + 1) % menu_items.length;
 				$(menu_items[selected_index]).addClass("menu-item-selected");
+				*/
+				select_menuitem((selected_index + 1) % menu_items.length);
+
+			} else if (event.keyCode == 13){
+				console.log("Display: " + menu_items[selected_index].innerHTML + "...");
 			}
-			console.log(selected_index);
+			//console.log(selected_index);
 
 		} else {
-			entrance_flag = 1;
-
-			console.log("continue...");
-			$("#subtitle").hide();
-			show_menuitem(0);
+			continue_to();
 		}
 	});
 
+	function continue_to(){
+		entrance_flag = 1;
+
+		console.log("continue...");
+		$("#subtitle").hide();
+		show_menuitem(0);
+	}
 
 	function show_menuitem(i){
 
@@ -119,6 +144,12 @@
 			$(menu_items[selected_index]).addClass("menu-item-selected");
 		}
 
+	}
+
+	function select_menuitem(i){
+		$(menu_items[selected_index]).removeClass("menu-item-selected");
+		$(menu_items[i]).addClass("menu-item-selected");
+		selected_index = i;
 	}
     </script>
     <!-- Animation Script
