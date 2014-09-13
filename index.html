@@ -13,147 +13,9 @@
     <!-- Google CDN : jQuery -->
     <script src = 'http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
 
-	<!-- DECLARATIONS & TiTLE ANiMATION -->
-    <script language = 'javascript'>
-    //Cross browser support
-    var requestAnimationFrame =
-    window.requestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.msRequestAnimationFrame;
-  
-    window.requestAnimationFrame = requestAnimationFrame;
-    
-    var title;
-    
-    var title_progress = -1;
-    var title_text = "";
-
-	var entrance_flag = 0;
-
-
-    $(document).ready(function(){
-		title = document.getElementById("title");
-
-		title_text = title.innerHTML;
-		title.innerHTML = "";
-
-		titleAnimation();
-    });
-    
-
-
-    function titleAnimation(){
-        if(title_progress <= title_text.length){
-            title.innerHTML = "{" + title_text.substring(0, title_progress) + "_}";
-            title_progress += 1;
-            setTimeout(titleAnimation, 60);
-            
-        } else {
-            setTimeout(function(){
-                title.innerHTML = "{" + title_text.substring(0, title_progress) + "}";
-                setTimeout(disp_subtitle, 200);
-            }, 100);
-        }
-    }
-    
-    function disp_subtitle(){
-        document.getElementById("subtitle").innerHTML = "press any key to continue: ";
-        $("#subtitle").append('<span id = "cursor" style = "opacity: 1">_</span>');
-        
-        setInterval(function(){
-            document.getElementById("cursor").style.opacity ^= 1;
-        	//console.log(document.getElementById("cursor").style.opacity);
-		}, 400);
-    }
-    </script>
-
-	<!-- MAiN MENU SCRiPT -->
-    <script language = 'javascript'>
-
-	var menu_items;
-	var selected_index = 2;
-
-    $(document).ready(function(){
-		menu_items = document.getElementById("menu").children;
-
-		for(var i = 0; i < menu_items.length; ++i){
-			$(menu_items[i]).addClass("opt-" + i);
-		}
-    });
-    
-
-
-	$(document).click(function(){
-		if(!entrance_flag){
-			continue_to();
-		}
-	});
-
-	$(document).on("keydown", function(event){
-		
-		if(entrance_flag){
-			//console.log(event);
-			if(event.keyCode == 38) {
-				//UP ARROW
-				event.preventDefault();
-				/*
-				$(menu_items[selected_index]).removeClass("menu-item-selected");
-
-				selected_index = (selected_index + menu_items.length - 1) % menu_items.length;
-				$(menu_items[selected_index]).addClass("menu-item-selected");
-				*/
-				select_menuitem((selected_index + menu_items.length - 1) % menu_items.length);
-
-			} else if (event.keyCode == 40){
-				//DOWN ARROW
-				event.preventDefault();
-				/*
-				$(menu_items[selected_index]).removeClass("menu-item-selected");
-
-				selected_index = (selected_index + 1) % menu_items.length;
-				$(menu_items[selected_index]).addClass("menu-item-selected");
-				*/
-				select_menuitem((selected_index + 1) % menu_items.length);
-
-			} else if (event.keyCode == 13){
-				console.log("Display: " + menu_items[selected_index].innerHTML + "...");
-			}
-			//console.log(selected_index);
-
-		} else {
-			continue_to();
-		}
-	});
-
-	function continue_to(){
-		entrance_flag = 1;
-
-		console.log("continue...");
-		$("#subtitle").hide();
-		show_menuitem(0);
-	}
-
-	function show_menuitem(i){
-
-		menu_items[i].style.display = "block";
-		
-		if(menu_items.length > i + 1){
-			setTimeout(function(){show_menuitem(i + 1);}, 60);
-		} else {
-			$(menu_items[selected_index]).addClass("menu-item-selected");
-		}
-
-	}
-
-	function select_menuitem(i){
-		$(menu_items[selected_index]).removeClass("menu-item-selected");
-		$(menu_items[i]).addClass("menu-item-selected");
-		selected_index = i;
-	}
-    </script>
-    <!-- Animation Script
-    <script src = "./scripts/effects_title.js"></script>-->
+	<!-- FUNCTIONALITY & ANiMATION -->
+    <script language = 'javascript' src = './scripts/effects_home_title.js'></script>
+    <script language = 'javascript' src = './scripts/effects_home_menu.js'></script>
 </head>
 <body style = "background-color: #000000">
 
@@ -166,7 +28,7 @@
 
 		<!-- ENTRANCE  -->
 		<div id = "menu">
-			<div class = "menu-item" style = "display: none">
+			<div class = "menu-item" style = "display: none"">
 			.
 			</div>
 

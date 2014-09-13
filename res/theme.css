@@ -1,5 +1,7 @@
 html, body {
-        
+
+	cursor: default;
+
 	width: 100%;
 
 	padding: 0;
@@ -55,9 +57,11 @@ html, body {
 	color: #ffffff;
 	padding-left: 20px;
 }
+/*
 .menu-item-selected::before{
 	content: "> ";
 }
+*/
 
 /*.....................................................PARALLAX.....*/
 .parallaxContainer {
